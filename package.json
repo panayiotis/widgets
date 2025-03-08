@@ -6,18 +6,50 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write \"./*.{js,jsx,mdx,mjs}\" \"./app/**/*.{js,jsx,ts,tsx,mdx,mjs}\" --cache"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.2.1"
+    "d3": "^7.9.0",
+    "next": "15.2.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
-    "eslint": "^9",
+    "@eslint/eslintrc": "^3.3.1",
+    "@tailwindcss/postcss": "^4.1.3",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "d3": "^7.9.0",
+    "eslint": "^9.24.0",
     "eslint-config-next": "15.2.1",
-    "@eslint/eslintrc": "^3"
+    "lodash": "^4.17.21",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "tailwindcss": "^4.1.3"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "jsxSingleQuote": true,
+    "trailingComma": "es5",
+    "bracketSpacing": false,
+    "proseWrap": "always",
+    "importOrderParserPlugins": [
+      "typescript",
+      "jsx",
+      "importAssertions"
+    ],
+    "importOrder": [
+      "^(node:(.*)$)|^(dotenv/(.*)$)|^(dotenv$)",
+      "^(react(-redux)?/(.*)$)|^(react(-redux)?$)",
+      "^(next/(.*)$)|^(next$)",
+      "<THIRD_PARTY_MODULES>",
+      "^(@/|[.])(?!.*[.]css$).*$",
+      "css$"
+    ],
+    "importOrderSeparation": true,
+    "plugins": [
+      "@trivago/prettier-plugin-sort-imports",
+      "prettier-plugin-tailwindcss"
+    ]
   }
 }
