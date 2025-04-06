@@ -5,6 +5,8 @@ import * as d3 from 'd3';
 export default function Chart() {
   const [data, set_data] = useState(null);
   const chart_ref = useRef(null);
+  const container_ref = useRef(null);
+  const [dimensions, set_dimensions] = useState({width: 0, height: 0});
 
   useEffect(() => {
     const fetch_data = async () => {
@@ -24,7 +26,29 @@ export default function Chart() {
   }, []);
 
   useEffect(() => {
-    if (!data) return;
+    // Function to update dimensions
+    const updateDimensions = () => {
+      if (container_ref.current) {
+        const width = container_ref.current.clientWidth;
+        set_dimensions({
+          width,
+          height: width / 2,
+        });
+      }
+    };
+
+    // Set dimensions on mount
+    updateDimensions();
+
+    // Add resize listener
+    window.addEventListener('resize', updateDimensions);
+
+    // Clean up
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
+  useEffect(() => {
+    if (!data || dimensions.width === 0) return;
 
     // Extract weight data from dailyWeightSummaries
     let weight_data = data.dailyWeightSummaries
@@ -64,15 +88,20 @@ export default function Chart() {
     d3.select(chart_ref.current).selectAll('*').remove();
 
     // Set up dimensions
-    const margin = {top: 20, right: 20, bottom: 20, left: 35};
-    const width = 400 - margin.left - margin.right;
-    const height = width / 2 - margin.top - margin.bottom;
+    const margin = {top: 15, right: 0, bottom: 15, left: 40};
+    const width = dimensions.width - margin.left - margin.right;
+    const height = dimensions.height - margin.top - margin.bottom;
 
     // Create SVG
     const svg = d3
       .select(chart_ref.current)
-      .attr('width', width + margin.left + margin.right)
+      .attr('width', '100%')
       .attr('height', height + margin.top + margin.bottom)
+      .attr(
+        'viewBox',
+        `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`
+      )
+      .attr('preserveAspectRatio', 'xMidYMid meet')
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
@@ -117,7 +146,7 @@ export default function Chart() {
           .attr('stroke-dasharray', '2,2') // Make grid lines dashed
           .attr('stroke-opacity', 0.3); // Make grid lines slightly transparent
 
-        g.selectAll('.tick text').style('font-size', '20px'); // Set y-axis tick font size to 20px
+        g.selectAll('.tick text').style('font-size', '24px'); // Set y-axis tick font size to 20px
       })
       .attr('color', '#ddd');
 
@@ -143,10 +172,24 @@ export default function Chart() {
       .attr('fill', 'none')
       .attr('stroke', '#ddd')
       .attr('stroke-width', 2);
-  }, [data]);
+
+    // Add weight text above each data point
+    svg
+      .selectAll('.weight_label')
+      .data(weight_data.filter((d) => d.weight !== null))
+      .enter()
+      .append('text')
+      .attr('class', 'weight_label')
+      .attr('x', (d) => x_scale(d.date))
+      .attr('y', (d) => y_scale(d.weight) - 10) // Position 10px above the circle
+      .attr('text-anchor', 'middle') // Center text horizontally
+      .attr('fill', '#ddd')
+      .attr('font-size', '24px')
+      .text((d) => d.weight.toFixed(1)); // Display weight with 1 decimal place
+  }, [data, dimensions]);
 
   return (
-    <div className='space-y-4'>
+    <div className='w-full' ref={container_ref}>
       <svg ref={chart_ref}></svg>
     </div>
   );

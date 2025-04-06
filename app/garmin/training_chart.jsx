@@ -5,6 +5,8 @@ import * as d3 from 'd3';
 export default function Chart() {
   const [data, set_data] = useState(null);
   const ref = useRef(null);
+  const container_ref = useRef(null);
+  const [dimensions, set_dimensions] = useState({width: 0, height: 0});
 
   useEffect(() => {
     const fetch_data = async () => {
@@ -24,7 +26,29 @@ export default function Chart() {
   }, []);
 
   useEffect(() => {
-    if (!data) return;
+    // Function to update dimensions
+    const updateDimensions = () => {
+      if (container_ref.current) {
+        const width = container_ref.current.clientWidth;
+        set_dimensions({
+          width,
+          height: width / 2,
+        });
+      }
+    };
+
+    // Set dimensions on mount
+    updateDimensions();
+
+    // Add resize listener
+    window.addEventListener('resize', updateDimensions);
+
+    // Clean up
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
+  useEffect(() => {
+    if (!data || dimensions.width === 0) return;
 
     // Extract the daily training load data
     let device_id = data.recordedDevices[0].deviceId;
@@ -67,15 +91,20 @@ export default function Chart() {
     d3.select(ref.current).selectAll('*').remove();
 
     // Set up dimensions
-    const margin = {top: 20, right: 20, bottom: 20, left: 35};
-    const width = 400 - margin.left - margin.right;
-    const height = width / 2 - margin.top - margin.bottom;
+    const margin = {top: 15, right: 0, bottom: 15, left: 40};
+    const width = dimensions.width - margin.left - margin.right;
+    const height = dimensions.height - margin.top - margin.bottom;
 
     // Create SVG
     const svg = d3
       .select(ref.current)
-      .attr('width', width + margin.left + margin.right)
+      .attr('width', '100%')
       .attr('height', height + margin.top + margin.bottom)
+      .attr(
+        'viewBox',
+        `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`
+      )
+      .attr('preserveAspectRatio', 'xMidYMid meet')
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
@@ -133,14 +162,14 @@ export default function Chart() {
     svg
       .append('path')
       .datum(training_load_data)
-      .attr('fill', '#373')
+      .attr('fill', '#494')
       .attr('d', max_area);
 
     // Add min area (set to background color)
     svg
       .append('path')
       .datum(training_load_data)
-      .attr('fill', '#333')
+      .attr('fill', '#222')
       .attr('d', min_area);
 
     // Add hollow circles at data points (only for days with data)
@@ -168,7 +197,7 @@ export default function Chart() {
           return '';
         })
       )
-      .attr('color', '#ddd');
+      .attr('color', '#eee');
 
     // Add y-axis
     svg
@@ -184,22 +213,22 @@ export default function Chart() {
         g.selectAll('.tick line')
           .attr('stroke-dasharray', '2,2') // Make grid lines dashed
           .attr('stroke-opacity', 0.3); // Make grid lines slightly transparent
-        g.selectAll('.tick text').style('font-size', '20px'); // Set y-axis tick font size to 20px
+        g.selectAll('.tick text').style('font-size', '24px'); // Set y-axis tick font size to 20px
       })
-      .attr('color', '#ddd');
+      .attr('color', '#eee');
 
     // Add line path
     svg
       .append('path')
       .datum(training_load_data)
       .attr('fill', 'none')
-      .attr('stroke', '#ddd')
+      .attr('stroke', '#eee')
       .attr('stroke-width', 2)
       .attr('d', line);
-  }, [data]);
+  }, [data, dimensions]);
 
   return (
-    <div className='space-y-4'>
+    <div className='w-full' ref={container_ref}>
       <svg ref={ref}></svg>
     </div>
   );
