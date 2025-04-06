@@ -33,7 +33,7 @@ export default function RootLayout({children}) {
   return (
     <html lang='en'>
       <body
-        className={`min-w-[500px] ${geistSans.variable} ${geistMono.variable} ${mansalva.variable} ${cabinSketch.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${mansalva.variable} ${cabinSketch.variable} antialiased`}
       >
         {children}
       </body>
