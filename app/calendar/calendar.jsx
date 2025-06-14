@@ -88,6 +88,11 @@ const Calendar = () => {
           day_text = "🚙";
         } else if (cell_date.getMonth() === 5 && cell_date.getDate() === 19) {
           day_text = "⛱️";
+        } else if (cell_date.getMonth() === 5 && cell_date.getDate() === 20) {
+          day_text = "🛏️";
+        } else if (cell_date.getMonth() === 5 && cell_date.getDate() === 26) {
+          day_text = "🚲";
+
         } else if (cell_date.getMonth() === 6 && cell_date.getDate() === 4) {
           day_text = "⛱️";
         } else {
