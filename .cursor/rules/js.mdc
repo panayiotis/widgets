@@ -1,0 +1,7 @@
+---
+description: 
+globs: *.jsx,*.js
+alwaysApply: false
+---
+* use snake_case
+* use pnpm
