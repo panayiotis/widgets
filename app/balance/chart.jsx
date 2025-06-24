@@ -2,27 +2,20 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import * as d3 from 'd3';
 
-export default function Chart() {
-  const [data, set_data] = useState(null);
+export default function Chart({ data }) {
   const ref = useRef(null);
   const container_ref = useRef(null);
   const [dimensions, set_dimensions] = useState({width: 0, height: 0});
 
-  useEffect(() => {
-    const fetch_data = async () => {
-      try {
-        const url = 'https://widgets-eqh8mb.s3.us-east-1.amazonaws.com/transactions_by_date.json';
-        const response = await fetch(url);
-        const json_data = await response.json();
-        console.log(json_data);
-        set_data(json_data);
-      } catch (error) {
-        console.error('Error fetching transactions:', error);
-      }
-    };
+  // Process the balance data
+  const balance_data = data?.map(item => ({
+    date: new Date(item.date),
+    balance: parseFloat(item.balance)
+  })) || [];
 
-    fetch_data();
-  }, []);
+  // Define date range for the chart
+  const start_date = balance_data.length > 0 ? d3.min(balance_data, d => d.date) : new Date();
+  const end_date = balance_data.length > 0 ? d3.max(balance_data, d => d.date) : new Date();
 
   useEffect(() => {
     // Function to update dimensions
@@ -47,36 +40,7 @@ export default function Chart() {
   }, []);
 
   useEffect(() => {
-    if (!data || dimensions.width === 0) return;
-
-    // Process transaction data
-    const raw_transaction_data = data.map((entry) => ({
-      date: new Date(entry.date),
-      amount: entry.amount,
-    }));
-
-    // Calculate date range: from 1st of current month - 3 months
-    const now = new Date();
-    const start_date = new Date(now.getFullYear(), now.getMonth() - 2, 1);
-    const end_date = new Date(now.getFullYear(), now.getMonth() + 1, 0); // Last day of current month
-
-    // Filter data to the specified range
-    const filtered_data = raw_transaction_data.filter(
-      (entry) => entry.date >= start_date && entry.date <= end_date
-    );
-
-    // Sort by date
-    filtered_data.sort((a, b) => a.date - b.date);
-
-    // Calculate rolling balance (cumulative sum)
-    let running_balance = 0;
-    const balance_data = filtered_data.map((entry) => {
-      running_balance += entry.amount;
-      return {
-        date: entry.date,
-        balance: running_balance,
-      };
-    });
+    if (dimensions.width === 0 || balance_data.length === 0) return;
 
     // Clear any existing SVG content
     d3.select(ref.current).selectAll('*').remove();
@@ -184,14 +148,14 @@ export default function Chart() {
       // Add text with the balance value
       svg
         .append('text')
-        .attr('x', x_scale(last_point.date) - 10)
+        .attr('x', Math.min(x_scale(last_point.date) - 10, width - 30))
         .attr('y', y_scale(last_point.balance) - 10)
         .attr('fill', 'coral')
         .attr('font-size', '14px')
         .attr('font-family', 'monospace')
         .text(`$${Math.round(last_point.balance)}`);
     }
-  }, [data, dimensions]);
+  }, [dimensions, balance_data, start_date, end_date]);
 
   return (
     <div className='w-full' ref={container_ref}>
