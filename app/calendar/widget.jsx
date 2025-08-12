@@ -12,7 +12,7 @@ const Widget = () => {
       <Calendar />
       <div className={`flex-1 flex flex-col pl-3 ${border}`}>
         <p className='text-sm opacity-100 mt-1'>
-          {`🏊‍♀️ in ${1 + Math.floor((new Date('2025-09-01T00:00:00-05:00') - new Date()) / (1000 * 60 * 60 * 24))} days`}
+          {`🏊‍♀️ in ${1 + Math.floor((new Date('2025-08-30T00:00:00-05:00') - new Date()) / (1000 * 60 * 60 * 24))} days`}
         </p>
         <p className='text-sm opacity-100 mt-1'>
           {`⛱️ in ${1 + Math.floor((new Date('2025-09-01T00:00:00-05:00') - new Date()) / (1000 * 60 * 60 * 24))} days`}

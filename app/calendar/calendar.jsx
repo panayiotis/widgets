@@ -108,9 +108,11 @@ const Calendar = () => {
         } else if (cell_date.getMonth() === 6 && cell_date.getDate() === 4) {
           day_text = "⛱️";
         } else if (cell_date.getMonth() === 7 && cell_date.getDate() === 8) {
-          day_text = "📹";
+          day_text = "👩‍💼";
         } else if (cell_date.getMonth() === 7 && cell_date.getDate() === 11) {
-          day_text = "🚙";
+          day_text = "📽️";
+        } else if (cell_date.getMonth() === 7 && cell_date.getDate() === 30) {
+          day_text = "🏊‍♀️";
         } else if (cell_date.getMonth() === 8 && cell_date.getDate() === 1) {
           day_text = "⛱️";
         } else if (cell_date.getMonth() === 9 && cell_date.getDate() === 9) {
