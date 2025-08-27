@@ -18,6 +18,12 @@ const Widget = () => {
           {`⛱️ in ${1 + Math.floor((new Date('2025-09-01T00:00:00-05:00') - new Date()) / (1000 * 60 * 60 * 24))} days`}
         </p>
         <p className='text-sm opacity-100 mt-1'>
+          {`⚾️ in ${1 + Math.floor((new Date('2025-09-07T00:00:00-05:00') - new Date()) / (1000 * 60 * 60 * 24))} days`}
+        </p>
+        <p className='text-sm opacity-100 mt-1'>
+          {`🎸 in ${1 + Math.floor((new Date('2025-09-19T00:00:00-05:00') - new Date()) / (1000 * 60 * 60 * 24))} days`}
+        </p>
+        <p className='text-sm opacity-100 mt-1'>
           {`🎸 in ${1 + Math.floor((new Date('2025-10-19T00:00:00-05:00') - new Date()) / (1000 * 60 * 60 * 24))} days`}
         </p>
         <p className='text-sm opacity-80 mt-1'>
