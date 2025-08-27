@@ -14,10 +14,10 @@ const Calendar = () => {
 
   // Set start and end dates
   // NOTE: dates need to be in UTC to work correctly
-  const start_date = new Date('2025-08-01T00:00:00-05:00');
+  const start_date = new Date('2025-09-01T00:00:00-05:00');
   const first_cell_date = new Date(start_date);
   first_cell_date.setDate(start_date.getDate() - start_date.getDay() + 1); // Adjust to Monday (1)
-  const end_date = new Date('2025-10-13T00:00:00-05:00');
+  const end_date = new Date('2025-11-17T00:00:00-05:00');
   
   // Get current date for comparison
   const current_date = new Date();
@@ -111,12 +111,52 @@ const Calendar = () => {
           day_text = "👩‍💼";
         } else if (cell_date.getMonth() === 7 && cell_date.getDate() === 11) {
           day_text = "📽️";
+        } else if (cell_date.getMonth() === 7 && cell_date.getDate() === 23) {
+          day_text = "🎸";
         } else if (cell_date.getMonth() === 7 && cell_date.getDate() === 30) {
+          day_text = "🏊‍♀️";
+        } else if (cell_date.getMonth() === 7 && cell_date.getDate() === 31) {
           day_text = "🏊‍♀️";
         } else if (cell_date.getMonth() === 8 && cell_date.getDate() === 1) {
           day_text = "⛱️";
+        } else if (cell_date.getMonth() === 8 && cell_date.getDate() === 5) {
+          day_text = "🥃";
+        } else if (cell_date.getMonth() === 8 && cell_date.getDate() === 7) {
+          day_text = "⚾️";
+        } else if (cell_date.getMonth() === 8 && cell_date.getDate() === 12) {
+          day_text = "🏊‍♀️";
+        } else if (cell_date.getMonth() === 8 && cell_date.getDate() === 19) {
+          day_text = "⚽️";
+        } else if (cell_date.getMonth() === 8 && cell_date.getDate() === 20) {
+          day_text = "🎸";
+        } else if (cell_date.getMonth() === 8 && cell_date.getDate() === 23) {
+          day_text = "📸";
+        } else if (cell_date.getMonth() === 9 && cell_date.getDate() === 1) {
+          day_text = "📽️";
         } else if (cell_date.getMonth() === 9 && cell_date.getDate() === 9) {
           day_text = "🎂";
+        } else if (cell_date.getMonth() === 9 && cell_date.getDate() === 19) {
+          day_text = "🎸";
+        } else if (cell_date.getMonth() === 8 && cell_date.getDate() === 26) {
+          day_text = "⚽️";
+        } else if (cell_date.getMonth() === 9 && cell_date.getDate() === 3) {
+          day_text = "⚽️";
+        } else if (cell_date.getMonth() === 9 && cell_date.getDate() === 4) {
+          day_text = "⛴️";
+        } else if (cell_date.getMonth() === 9 && cell_date.getDate() === 10) {
+          day_text = "⚽️";
+        } else if (cell_date.getMonth() === 9 && cell_date.getDate() === 17) {
+          day_text = "⚽️";
+        } else if (cell_date.getMonth() === 9 && cell_date.getDate() === 24) {
+          day_text = "⚽️";
+        } else if (cell_date.getMonth() === 9 && cell_date.getDate() === 31) {
+          day_text = "⚽️";
+        } else if (cell_date.getMonth() === 10 && cell_date.getDate() === 4) {
+          day_text = "🎂";
+        } else if (cell_date.getMonth() === 10 && cell_date.getDate() === 7) {
+          day_text = "⚽️";
+        } else if (cell_date.getMonth() === 10 && cell_date.getDate() === 14) {
+          day_text = "⚽️";
         } else {
           day_text = day;
         }
